@@ -39,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			weight: {
 				type: DataTypes.INTEGER,
+				allowNull: false,
 				validate: {
 					notEmpty: {
 						msg: "This Field is required",
@@ -50,6 +51,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			width: {
 				type: DataTypes.INTEGER,
+				allowNull: false,
 				validate: {
 					notEmpty: {
 						msg: "This Field is required",
@@ -61,6 +63,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			length: {
 				type: DataTypes.INTEGER,
+				allowNull: false,
 				validate: {
 					notEmpty: {
 						msg: "This Field is required",
@@ -72,6 +75,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			height: {
 				type: DataTypes.INTEGER,
+				allowNull: false,
 				validate: {
 					notEmpty: {
 						msg: "This Field is required",
@@ -95,6 +99,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			harga: {
 				type: DataTypes.INTEGER,
+				allowNull: false,
 				validate: {
 					notEmpty: {
 						msg: "This Field is required",
@@ -106,6 +111,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			CategoryId: {
 				type: DataTypes.INTEGER,
+				allowNull: false,
 				validate: {
 					notEmpty: {
 						msg: "This Field is required",

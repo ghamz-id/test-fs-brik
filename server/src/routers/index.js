@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const errorHandler = require("../middlewares/error.handler");
 
 router.get("/", (req, res) => {
 	res.json({
@@ -19,4 +20,5 @@ router.get("*", (req, res) => {
 	});
 });
 
+router.use(errorHandler);
 module.exports = router;
