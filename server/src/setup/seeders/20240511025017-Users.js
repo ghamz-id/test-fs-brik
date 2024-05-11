@@ -9,11 +9,11 @@ module.exports = {
 			"Users",
 			[
 				{
-					name: "New User",
-					username: "user1",
-					email: "user1@mail.com",
-					password: hashPassword("user1234"),
-					role: "staff",
+					name: "Administrator",
+					username: "admin",
+					email: "admin@mail.com",
+					password: hashPassword("admin123"),
+					role: "admin",
 					createdAt: new Date(),
 					updatedAt: new Date(),
 				},

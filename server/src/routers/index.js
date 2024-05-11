@@ -11,12 +11,11 @@ router.get("/", (req, res) => {
 
 router.use("/auth", require("./auth.router"));
 router.use("/product", require("./product.route"));
-router.use("/category", require("./category.route"));
 
 router.get("*", (req, res) => {
 	res.json({
 		success: false,
-		message: "Resource not found",
+		message: "API route not found",
 	});
 });
 

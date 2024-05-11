@@ -1,9 +1,21 @@
 const express = require("express");
-const authRouter = express.Router();
+const productRouter = express.Router();
+const upload = require("../helpers/uploader");
 const ProductController = require("../controllers/product.controller");
+const authentication = require("../middlewares/authentication");
+const { adminOnly } = require("../middlewares/authorization");
 
-authRouter.get("/", ProductController.allProducts);
-authRouter.get("/:id", ProductController.detailProduct);
-authRouter.post("/", ProductController.addProduct);
+productRouter.get("/", ProductController.allProducts);
+productRouter.get("/:id", ProductController.detailProduct);
 
-module.exports = authRouter;
+productRouter.use(authentication);
+productRouter.use(adminOnly);
+productRouter.post("/", upload.single("image"), ProductController.addProduct);
+productRouter.put(
+	"/:id",
+	upload.single("image"),
+	ProductController.updateProduct
+);
+productRouter.delete("/:id", ProductController.deleteProduct);
+
+module.exports = productRouter;

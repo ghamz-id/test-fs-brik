@@ -12,6 +12,12 @@ const errorHandler = (err, req, res, next) => {
 		case "emptyField":
 			res.status(400).json({ message: "No username or password" });
 			break;
+		case "invalid_token":
+			res.status(401).json({ message: "You must login for access this fitur" });
+			break;
+		case "forbidden":
+			res.status(403).json({ message: "You're not admin" });
+			break;
 		case "notFound":
 			res.status(404).json({ message: "Data not found" });
 			break;
