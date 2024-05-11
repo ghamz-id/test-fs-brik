@@ -43,6 +43,11 @@ class AuthController {
 			return res.status(200).json({
 				message: "Login success",
 				token: token,
+				user: {
+					name: user.name,
+					username: user.username,
+					email: user.email,
+				},
 			});
 		} catch (error) {
 			next(error);
