@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			// define association here
+			Products.belongsTo(models.Categories);
 		}
 	}
 	Products.init(
@@ -97,7 +98,7 @@ module.exports = (sequelize, DataTypes) => {
 					},
 				},
 			},
-			harga: {
+			price: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 				validate: {
@@ -109,6 +110,9 @@ module.exports = (sequelize, DataTypes) => {
 					},
 				},
 			},
+			sku: {
+				type: DataTypes.STRING,
+			},
 			CategoryId: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
@@ -119,6 +123,10 @@ module.exports = (sequelize, DataTypes) => {
 					notNull: {
 						msg: "This Field is required",
 					},
+				},
+				references: {
+					model: "Categories",
+					key: "id",
 				},
 			},
 		},

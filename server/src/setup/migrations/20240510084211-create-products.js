@@ -30,8 +30,11 @@ module.exports = {
 			image: {
 				type: Sequelize.STRING,
 			},
-			harga: {
+			price: {
 				type: Sequelize.INTEGER,
+			},
+			sku: {
+				type: Sequelize.STRING,
 			},
 			CategoryId: {
 				type: Sequelize.INTEGER,

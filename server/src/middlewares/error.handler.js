@@ -12,6 +12,9 @@ const errorHandler = (err, req, res, next) => {
 		case "emptyField":
 			res.status(400).json({ message: "No username or password" });
 			break;
+		case "notFound":
+			res.status(404).json({ message: "Data not found" });
+			break;
 		case "invalidLogin":
 			res.status(401).json({ message: "Username or Password is wrong" });
 		default:
