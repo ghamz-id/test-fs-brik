@@ -1,20 +1,42 @@
+import { useDispatch, useSelector } from "react-redux";
 import Card from "../components/card";
+import { useEffect, useState } from "react";
+import { fetch_product } from "../redux/products.slice";
 
 export default function HomePage() {
+	const [params, setParams] = useState({});
+	const dispatch = useDispatch();
+	const { products } = useSelector((state) => state.products);
+	const { data } = products;
+	useEffect(() => {
+		dispatch(fetch_product(params));
+	}, [params]);
+
+	const GetParams = (e) => {
+		const { name, value } = e.target;
+		setParams({ ...params, [name]: value, page: 1 });
+	};
+
 	return (
 		<>
 			<div className="w-full flex flex-col items-center pb-4">
 				<div className="container flex gap-6 mt-20 p-2 max-sm:px-2">
 					{/* SIDE MENU */}
-					<div className="flex flex-col gap-3 w-80 max-sm:hidden">
-						<div className="divider">Find Our Products</div>
+					<div className="flex flex-col gap-3 w-80 pt-5 max-sm:hidden">
+						<div className="divider font-semibold">Find Our Products</div>
 						{/* SEARCH */}
 						<label className="form-control w-full gap-2 px-4">
 							<label className="input input-bordered flex items-center gap-2 w-full input-sm">
-								<input type="text" className="grow" placeholder="Search" />
+								<input
+									type="text"
+									className="grow"
+									placeholder="Search"
+									name="search"
+									onChange={GetParams}
+								/>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
-									className="h-3 w-3"
+									className="h-3 w-3 hover:cursor-pointer"
 									fill="none"
 									viewBox="0 0 24 24"
 									stroke="currentColor"
@@ -29,16 +51,25 @@ export default function HomePage() {
 							</label>
 						</label>
 						{/* SORT BY */}
-						<div className="divider">Sort By</div>
+						<div className="divider font-semibold">Sort By</div>
 						<div className="form-control px-4">
-							{Array.from({ length: 5 }, (_, index) => (
-								<label className="label cursor-pointer" key={index}>
-									<span className="label-text">Red pill</span>
+							{["name", "price", "CategoryId"].map((item, i) => (
+								<label className="cursor-pointer flex gap-2 py-1" key={i}>
 									<input
 										type="radio"
-										name="radio-10"
-										className="radio checked:bg-blue-500"
+										name="sortBy"
+										onChange={() =>
+											GetParams({ target: { name: "sortBy", value: item } })
+										}
+										className="checkbox checkbox-success"
 									/>
+									<span className="label-text text-left">
+										{item === "name"
+											? "Product Name"
+											: item === "price"
+											? "Product Price"
+											: "Product Category"}
+									</span>
 								</label>
 							))}
 						</div>
@@ -46,7 +77,9 @@ export default function HomePage() {
 					{/* CONTENT PRODUCTS */}
 					<div className="w-full">
 						<div className="text-end pb-2">
-							<p>ITEMS PER PAGE : 10</p>
+							<p className="px-4 font-semibold">
+								ITEMS ON PAGE : {products.dataOnPage}
+							</p>
 						</div>
 						<div
 							className="
@@ -56,18 +89,42 @@ export default function HomePage() {
 					max-xl:grid-cols-3 max-xl:gap-4
 					"
 						>
-							{Array.from({ length: 10 }, (_, index) => (
-								<Card key={index} id={index} />
-							))}
+							{data &&
+								data.map((product, i) => {
+									return <Card key={i} product={product} />;
+								})}
 						</div>
 					</div>
 				</div>
 				<div className="grid justify-center pt-4">
-					<div className="join gap-1">
-						<button className="join-item btn max-sm:btn-sm">«</button>
-						<button className="join-item btn max-sm:btn-sm">Page 22</button>
-						<button className="join-item btn max-sm:btn-sm">»</button>
-					</div>
+					{products.dataOnPage !== 0 && (
+						<div className="join gap-1">
+							<button
+								onClick={() => setParams({ page: products.page - 1 })}
+								className={
+									products.page === 1
+										? "join-item btn max-sm:btn-sm btn-disabled"
+										: "join-item btn max-sm:btn-sm"
+								}
+							>
+								«
+							</button>
+							<button className="join-item btn max-sm:btn-sm">
+								Page {products.page}
+							</button>
+							<button
+								onClick={() => setParams({ page: products.page + 1 })}
+								className={
+									products.page === products.totalPage ||
+									products.dataOnPage < 10
+										? "join-item btn max-sm:btn-sm btn-disabled"
+										: "join-item btn max-sm:btn-sm"
+								}
+							>
+								»
+							</button>
+						</div>
+					)}
 				</div>
 			</div>
 		</>

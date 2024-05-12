@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { fetch_product } from "../redux/products.slice";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 export default function Navbar() {
+	const dispatch = useDispatch();
 	return (
 		<>
 			<div className="navbar bg-neutral text-neutral-content fixed z-10">
@@ -45,12 +49,27 @@ export default function Navbar() {
 					</Link>
 				</div>
 				<div className="navbar-end">
-					<Link
-						to={"/login"}
-						className="btn btn-ghost btn-circle hover:bg-black"
-					>
-						Login
-					</Link>
+					{localStorage.token ? (
+						<Link
+							to={"/"}
+							onClick={() => {
+								localStorage.clear();
+								useEffect(() => {
+									dispatch(fetch_product());
+								}, []);
+							}}
+							className="btn btn-ghost btn-circle hover:bg-black"
+						>
+							Logout
+						</Link>
+					) : (
+						<Link
+							to={"/login"}
+							className="btn btn-ghost btn-circle hover:bg-black"
+						>
+							Login
+						</Link>
+					)}
 				</div>
 			</div>
 		</>
