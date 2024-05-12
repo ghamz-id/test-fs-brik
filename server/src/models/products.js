@@ -1,4 +1,5 @@
 "use strict";
+const { faker } = require("@faker-js/faker");
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
 	class Products extends Model {
@@ -26,63 +27,39 @@ module.exports = (sequelize, DataTypes) => {
 					},
 				},
 			},
-			description: {
-				type: DataTypes.STRING,
-				allowNull: false,
-				validate: {
-					notNull: {
-						msg: "Description is required",
-					},
-					notEmpty: {
-						msg: "Description is required",
-					},
-				},
-			},
-			weight: {
+			CategoryId: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 				validate: {
 					notEmpty: {
-						msg: "This Field is required",
+						msg: "Select the category",
 					},
 					notNull: {
-						msg: "This Field is required",
+						msg: "Select the category",
+					},
+					min: {
+						args: [1],
+						msg: "Select the category",
 					},
 				},
+				references: {
+					model: "Categories",
+					key: "id",
+				},
 			},
-			width: {
+			price: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 				validate: {
 					notEmpty: {
-						msg: "This Field is required",
+						msg: "Price must be greater than 1000",
 					},
 					notNull: {
-						msg: "This Field is required",
+						msg: "Price must be greater than 1000",
 					},
-				},
-			},
-			length: {
-				type: DataTypes.INTEGER,
-				allowNull: false,
-				validate: {
-					notEmpty: {
-						msg: "This Field is required",
-					},
-					notNull: {
-						msg: "This Field is required",
-					},
-				},
-			},
-			height: {
-				type: DataTypes.INTEGER,
-				allowNull: false,
-				validate: {
-					notEmpty: {
-						msg: "This Field is required",
-					},
-					notNull: {
-						msg: "This Field is required",
+					min: {
+						args: [1000],
+						msg: "Price must be greater than 1000",
 					},
 				},
 			},
@@ -98,36 +75,85 @@ module.exports = (sequelize, DataTypes) => {
 					},
 				},
 			},
-			price: {
+			weight: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 				validate: {
 					notEmpty: {
-						msg: "This Field is required",
+						msg: "Weight must be greater than 0",
 					},
 					notNull: {
-						msg: "This Field is required",
+						msg: "Weight must be greater than 0",
+					},
+					min: {
+						args: [1],
+						msg: "Weight must be greater than 0",
+					},
+				},
+			},
+			width: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+				validate: {
+					notEmpty: {
+						msg: "Width must be greater than 0",
+					},
+					notNull: {
+						msg: "Width must be greater than 0",
+					},
+					min: {
+						args: [1],
+						msg: "Width must be greater than 0",
+					},
+				},
+			},
+			length: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+				validate: {
+					notEmpty: {
+						msg: "Length must be greater than 0",
+					},
+					notNull: {
+						msg: "Length must be greater than 0",
+					},
+					min: {
+						args: [1],
+						msg: "Length must be greater than 0",
+					},
+				},
+			},
+			height: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+				validate: {
+					notEmpty: {
+						msg: "Height must be greater than 0",
+					},
+					notNull: {
+						msg: "Height must be greater than 0",
+					},
+					min: {
+						args: [1],
+						msg: "Height must be greater than 0",
+					},
+				},
+			},
+			description: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				validate: {
+					notNull: {
+						msg: "Description is required",
+					},
+					notEmpty: {
+						msg: "Description is required",
 					},
 				},
 			},
 			sku: {
 				type: DataTypes.STRING,
-			},
-			CategoryId: {
-				type: DataTypes.INTEGER,
-				allowNull: false,
-				validate: {
-					notEmpty: {
-						msg: "This Field is required",
-					},
-					notNull: {
-						msg: "This Field is required",
-					},
-				},
-				references: {
-					model: "Categories",
-					key: "id",
-				},
+				defaultValue: faker.number.hex({ min: 0, max: 65535 }),
 			},
 		},
 		{

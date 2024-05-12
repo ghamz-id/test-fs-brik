@@ -1,10 +1,84 @@
+import axios from "axios";
+import { useState } from "react";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../../constants";
+import Loading from "../../components/loading";
+import { useNavigate } from "react-router-dom";
+
 export default function FormPage() {
+	const [input, setInput] = useState({
+		name: "",
+		description: "",
+		weight: 0,
+		width: 0,
+		length: 0,
+		height: 0,
+		price: 0,
+		sku: "",
+		CategoryId: 0,
+	});
+
+	const [file, setFile] = useState(null);
+	const getImage = (e) => {
+		const image = e.target.files[0];
+		setFile(image);
+	};
+
+	const GetInput = (e) => {
+		setInput({
+			...input,
+			[e.target.name]: e.target.value,
+		});
+	};
+
+	const navigate = useNavigate();
+	const SubmitForm = async (e) => {
+		e.preventDefault();
+		const formData = new FormData();
+		formData.append("name", input.name);
+		formData.append("description", input.description);
+		formData.append("weight", input.weight);
+		formData.append("width", input.width);
+		formData.append("length", input.length);
+		formData.append("height", input.height);
+		formData.append("image", file);
+		formData.append("price", input.price);
+		formData.append("sku", input.sku);
+		formData.append("CategoryId", input.CategoryId);
+		try {
+			setLoading(true);
+			const response = await axios({
+				method: "POST",
+				url: BASE_URL + "/products",
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("token"),
+				},
+				data: formData,
+			});
+			setLoading(false);
+			Swal.fire({
+				icon: "success",
+				title: response.data.message,
+			});
+			navigate("/");
+		} catch (error) {
+			Swal.fire({
+				icon: "error",
+				title: error.response.data.message,
+			});
+		}
+	};
+
+	const [loading, setLoading] = useState(false);
+	if (loading) {
+		return <Loading />;
+	}
 	return (
 		<>
 			<div className="w-full h-screen flex justify-center items-center bg-base-200">
 				<div className="container flex items-center justify-center p-12">
 					<div className="mx-auto w-full max-w-[550px]">
-						<form action="https://formbold.com/s/FORM_ID" method="POST">
+						<form onSubmit={SubmitForm}>
 							<div className="mb-5">
 								<label
 									htmlFor="name"
@@ -15,6 +89,7 @@ export default function FormPage() {
 								<input
 									type="text"
 									name="name"
+									onChange={GetInput}
 									id="name"
 									placeholder="Product Name"
 									className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -31,6 +106,7 @@ export default function FormPage() {
 									<select
 										type="text"
 										name="CategoryId"
+										onChange={GetInput}
 										id="CategoryId"
 										className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
 									>
@@ -56,6 +132,8 @@ export default function FormPage() {
 										<input
 											type="number"
 											id="input-group-1"
+											name="price"
+											onChange={GetInput}
 											className="ps-10 w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
 											placeholder="0"
 										/>
@@ -72,6 +150,7 @@ export default function FormPage() {
 								<input
 									type="file"
 									name="image"
+									onChange={getImage}
 									id="image"
 									placeholder="Enter your image"
 									className="file-input w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -88,6 +167,7 @@ export default function FormPage() {
 									<input
 										type="number"
 										name="weight"
+										onChange={GetInput}
 										id="weight"
 										placeholder="0"
 										className="file-input w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -103,6 +183,7 @@ export default function FormPage() {
 									<input
 										type="number"
 										name="width"
+										onChange={GetInput}
 										id="width"
 										placeholder="0"
 										className="file-input w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -118,6 +199,7 @@ export default function FormPage() {
 									<input
 										type="number"
 										name="length"
+										onChange={GetInput}
 										id="length"
 										placeholder="0"
 										className="file-input w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -133,6 +215,7 @@ export default function FormPage() {
 									<input
 										type="number"
 										name="height"
+										onChange={GetInput}
 										id="height"
 										placeholder="0"
 										className="file-input w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -149,6 +232,7 @@ export default function FormPage() {
 								<textarea
 									rows={4}
 									name="description"
+									onChange={GetInput}
 									id="description"
 									placeholder="Type your description here..."
 									className="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"

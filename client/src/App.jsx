@@ -26,7 +26,7 @@ const router = createBrowserRouter([
 						return null;
 					}
 					Swal.fire({
-						title: "Please login first",
+						title: "You must login for access this fitur",
 						icon: "error",
 					});
 					return redirect("/login");
