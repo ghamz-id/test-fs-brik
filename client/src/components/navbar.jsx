@@ -5,6 +5,7 @@ import { useEffect } from "react";
 
 export default function Navbar() {
 	const dispatch = useDispatch();
+	const user = JSON.parse(localStorage.getItem("user"));
 	return (
 		<>
 			<div className="navbar bg-neutral text-neutral-content fixed z-10 lg:px-5">
@@ -32,14 +33,29 @@ export default function Navbar() {
 						</div>
 						<ul
 							tabIndex={0}
-							className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 text-black"
+							className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 text-black gap-2"
 						>
 							<li>
 								<Link to={"/"}>Homepage</Link>
 							</li>
 							<li>
-								<a>Add products</a>
+								<Link to={"/add-product"}>
+									Add product
+									{!localStorage.token && (
+										<span className="badge badge-neutral text-xs">login</span>
+									)}
+								</Link>
 							</li>
+							{localStorage.token && (
+								<li>
+									<p className="mt-10">
+										Hello, {user.username}
+										<span className="badge badge-neutral text-xs">
+											{user.role}
+										</span>
+									</p>
+								</li>
+							)}
 						</ul>
 					</div>
 				</div>

@@ -10,12 +10,28 @@ import HomePage from "./pages/home.page";
 import DetailsPage from "./pages/details.page";
 import LoginPage from "./pages/login.page";
 import RegisterPage from "./pages/register.page";
+import FormPage from "./pages/auth/form.page";
+import Swal from "sweetalert2";
 
 const router = createBrowserRouter([
 	{
 		element: <MainLayout />,
 		children: [
 			{ path: "/", element: <HomePage /> },
+			{
+				path: "/add-product",
+				element: <FormPage />,
+				loader: () => {
+					if (localStorage.token) {
+						return null;
+					}
+					Swal.fire({
+						title: "Please login first",
+						icon: "error",
+					});
+					return redirect("/login");
+				},
+			},
 			{
 				path: "/products/:id",
 				element: <DetailsPage />,

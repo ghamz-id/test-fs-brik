@@ -16,10 +16,10 @@ export default function DetailsPage() {
 	return (
 		<>
 			<div className="w-full h-screen flex justify-center items-center bg-base-200 max-sm:overflow-y-auto">
-				<div className="container h-full flex justify-center items-center mt-10">
+				<div className="container h-full flex justify-center items-center max-sm:mt-32">
 					<div className="hero min-h-screen">
 						{data && (
-							<div className="hero-content flex-col lg:flex-row max-sm:mt-20">
+							<div className="hero-content flex-col lg:flex-row">
 								<img
 									src={data.image}
 									alt="image"
