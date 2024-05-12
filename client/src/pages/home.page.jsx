@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import Card from "../components/card";
 import { useEffect, useState } from "react";
-import { fetch_product } from "../redux/products.slice";
+import { fetch } from "../redux/products.slice";
 
 export default function HomePage() {
 	const [params, setParams] = useState({});
@@ -9,7 +9,7 @@ export default function HomePage() {
 	const { products } = useSelector((state) => state.products);
 	const { data } = products;
 	useEffect(() => {
-		dispatch(fetch_product(params));
+		dispatch(fetch(params));
 	}, [params]);
 
 	const GetParams = (e) => {
@@ -19,7 +19,7 @@ export default function HomePage() {
 
 	return (
 		<>
-			<div className="w-full flex flex-col items-center pb-4">
+			<div className="w-full flex flex-col items-center pb-4 bg-base-200">
 				<div className="container flex gap-6 mt-20 p-2 max-sm:px-2">
 					{/* SIDE MENU */}
 					<div className="flex flex-col gap-3 w-80 pt-5 max-sm:hidden">
@@ -104,12 +104,12 @@ export default function HomePage() {
 								className={
 									products.page === 1
 										? "join-item btn max-sm:btn-sm btn-disabled"
-										: "join-item btn max-sm:btn-sm"
+										: "join-item btn max-sm:btn-sm bg-neutral text-white"
 								}
 							>
 								«
 							</button>
-							<button className="join-item btn max-sm:btn-sm">
+							<button className="join-item btn max-sm:btn-sm bg-neutral text-white">
 								Page {products.page}
 							</button>
 							<button
@@ -118,7 +118,7 @@ export default function HomePage() {
 									products.page === products.totalPage ||
 									products.dataOnPage < 10
 										? "join-item btn max-sm:btn-sm btn-disabled"
-										: "join-item btn max-sm:btn-sm"
+										: "join-item btn max-sm:btn-sm bg-neutral text-white"
 								}
 							>
 								»

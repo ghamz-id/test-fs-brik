@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
 });
 
 router.use("/auth", require("./auth.router"));
-router.use("/product", require("./product.route"));
+router.use("/products", require("./product.route"));
 
 router.get("*", (req, res) => {
 	res.json({

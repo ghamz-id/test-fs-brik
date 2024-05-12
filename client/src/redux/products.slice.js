@@ -8,21 +8,21 @@ const slicer = createSlice({
 	name: "products",
 	initialState: {
 		products: [],
-		products_id: {},
+		productDetails: {},
 	},
 	reducers: {
 		products: (state, action) => {
 			state.products = action.payload;
 		},
-		products_id: (state, action) => {
-			state.products_id = action.payload;
+		productDetails: (state, action) => {
+			state.productDetails = action.payload;
 		},
 	},
 });
-const { products, products_id } = slicer.actions;
+const { products, productDetails } = slicer.actions;
 
 // ---------------- ASYNC THUNK ----------------
-export function fetch_product(params) {
+export function fetch(params) {
 	return async (dispatch) => {
 		try {
 			const { data } = await axios({
@@ -34,6 +34,26 @@ export function fetch_product(params) {
 				},
 			});
 			dispatch(products(data));
+		} catch (error) {
+			Swal.fire({
+				title: error.response.data.message,
+				icon: "error",
+			});
+		}
+	};
+}
+
+export function fetchById(id) {
+	return async (dispatch) => {
+		try {
+			const { data } = await axios({
+				method: "GET",
+				url: BASE_URL + `/products/${id}`,
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("token"),
+				},
+			});
+			dispatch(productDetails(data));
 		} catch (error) {
 			Swal.fire({
 				title: error.response.data.message,

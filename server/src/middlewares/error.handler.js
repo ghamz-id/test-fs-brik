@@ -10,7 +10,7 @@ const errorHandler = (err, req, res, next) => {
 			res.status(400).json({ message: "Username already exist" });
 			break;
 		case "emptyField":
-			res.status(400).json({ message: "No username or password" });
+			res.status(400).json({ message: "Please insert your account" });
 			break;
 		case "invalid_token":
 			res.status(401).json({ message: "You must login for access this fitur" });

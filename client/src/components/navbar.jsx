@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { fetch_product } from "../redux/products.slice";
+import { fetch } from "../redux/products.slice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 
@@ -7,7 +7,7 @@ export default function Navbar() {
 	const dispatch = useDispatch();
 	return (
 		<>
-			<div className="navbar bg-neutral text-neutral-content fixed z-10">
+			<div className="navbar bg-neutral text-neutral-content fixed z-10 lg:px-5">
 				<div className="navbar-start">
 					<div className="dropdown">
 						<div
@@ -55,7 +55,7 @@ export default function Navbar() {
 							onClick={() => {
 								localStorage.clear();
 								useEffect(() => {
-									dispatch(fetch_product());
+									dispatch(fetch());
 								}, []);
 							}}
 							className="btn btn-ghost btn-circle hover:bg-black"
