@@ -20,7 +20,7 @@ const router = createBrowserRouter([
 		children: [
 			{ path: "/", element: <HomePage /> },
 			{
-				path: "/add-product",
+				path: "/form-product",
 				element: <FormPage />,
 				loader: () => {
 					if (localStorage.token) {
@@ -32,6 +32,7 @@ const router = createBrowserRouter([
 					});
 					return redirect("/login");
 				},
+				children: [{ path: ":id", element: <FormPage /> }],
 			},
 			{
 				path: "/table-products",

@@ -39,7 +39,7 @@ export default function Navbar() {
 								<Link to={"/"}>Homepage</Link>
 							</li>
 							<li>
-								<Link to={"/add-product"}>
+								<Link to={"/form-product"}>
 									Add Product
 									{!localStorage.token && (
 										<span className="badge badge-neutral text-xs">login</span>

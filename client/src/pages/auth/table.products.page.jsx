@@ -129,9 +129,12 @@ export default function TableProducts() {
 													}).format(product.price)}
 												</td>
 												<td className="grid grid-cols-2 gap-2 mt-3">
-													<button className="btn btn-warning btn-xs">
+													<Link
+														to={"/form-product/" + product.id}
+														className="btn btn-warning btn-xs"
+													>
 														Edit
-													</button>
+													</Link>
 													<button className="btn btn-error btn-xs text-white">
 														Delete
 													</button>

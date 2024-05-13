@@ -1,9 +1,11 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../../constants";
 import Loading from "../../components/loading";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchById } from "../../redux/products.slice";
 
 export default function FormPage() {
 	const [input, setInput] = useState({
@@ -31,6 +33,29 @@ export default function FormPage() {
 		});
 	};
 
+	// Edit form
+	const { id } = useParams();
+	const dispatch = useDispatch();
+	const { data } = useSelector((state) => state.products.productDetails);
+
+	useEffect(() => {
+		dispatch(fetchById(id));
+		if (id && data) {
+			setInput({
+				name: data.name,
+				description: data.description,
+				image: data.image,
+				weight: data.weight,
+				width: data.width,
+				length: data.length,
+				height: data.height,
+				price: data.price,
+				sku: data.sku,
+				CategoryId: data.CategoryId,
+			});
+		}
+	}, [id]);
+
 	const navigate = useNavigate();
 	const SubmitForm = async (e) => {
 		e.preventDefault();
@@ -41,7 +66,7 @@ export default function FormPage() {
 		formData.append("width", input.width);
 		formData.append("length", input.length);
 		formData.append("height", input.height);
-		formData.append("image", file);
+		formData.append("image", file ? file : data.image);
 		formData.append("price", input.price);
 		formData.append("sku", input.sku);
 		formData.append("CategoryId", input.CategoryId);
