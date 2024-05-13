@@ -47,6 +47,7 @@ const router = createBrowserRouter([
 					});
 					return redirect("/login");
 				},
+				children: [{ path: ":id", element: <TableProducts /> }],
 			},
 			{
 				path: "/products/:id",

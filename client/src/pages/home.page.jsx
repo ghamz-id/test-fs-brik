@@ -76,9 +76,12 @@ export default function HomePage() {
 					</div>
 					{/* CONTENT PRODUCTS */}
 					<div className="w-full">
-						<div className="text-end pb-2">
+						<div className="text-end pb-2 flex justify-end">
 							<p className="px-4 font-semibold">
-								ITEMS ON PAGE : {products.dataOnPage}
+								Items on page : {products.dataOnPage || 0}
+							</p>
+							<p className="px-4 font-semibold">
+								Total Items : {products.totalData || 0}
 							</p>
 						</div>
 						<div

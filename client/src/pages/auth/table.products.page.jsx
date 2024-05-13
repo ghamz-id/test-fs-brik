@@ -1,10 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import Card from "../../components/card";
 import { useEffect, useState } from "react";
 import { fetch } from "../../redux/products.slice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { BASE_URL } from "../../../constants";
 
 export default function TableProducts() {
+	const { id } = useParams();
 	const [params, setParams] = useState({});
 	const dispatch = useDispatch();
 	const { products } = useSelector((state) => state.products);
@@ -12,12 +15,53 @@ export default function TableProducts() {
 
 	useEffect(() => {
 		dispatch(fetch(params));
-	}, [params]);
+	}, [params, id]);
 
 	const GetParams = (e) => {
 		const { name, value } = e.target;
 		setParams({ ...params, [name]: value, page: 1 });
 	};
+
+	const navigate = useNavigate();
+	const Delete = async () => {
+		try {
+			const { data } = await axios({
+				method: "DELETE",
+				url: BASE_URL + `/products/${id}`,
+				headers: {
+					Authorization: "Bearer " + localStorage.getItem("token"),
+				},
+			});
+			Swal.fire({
+				icon: "success",
+				title: data.message,
+			});
+			navigate("/table-products");
+		} catch (error) {
+			Swal.fire({
+				icon: "error",
+				title: error.response.data.message,
+			});
+		}
+	};
+	useEffect(() => {
+		if (id) {
+			Swal.fire({
+				title: "Are you sure?",
+				text: "You won't be able to revert this!",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonText: "Yes, delete it!",
+				cancelButtonText: "No, cancel!",
+			}).then((result) => {
+				if (result.isConfirmed) {
+					Delete();
+				} else if (result.dismiss === Swal.DismissReason.cancel) {
+					navigate("/table-products");
+				}
+			});
+		}
+	}, [id]);
 
 	return (
 		<>
@@ -78,9 +122,12 @@ export default function TableProducts() {
 					</div>
 					{/* CONTENT PRODUCTS */}
 					<div className="w-full">
-						<div className="text-end pb-2">
+						<div className="text-end pb-2 flex justify-end">
 							<p className="px-4 font-semibold">
-								ITEMS ON PAGE : {products.dataOnPage}
+								Items on page : {products.dataOnPage || 0}
+							</p>
+							<p className="px-4 font-semibold">
+								Total Items : {products.totalData || 0}
 							</p>
 						</div>
 						<div className="border rounded-xl p-2">
@@ -135,9 +182,12 @@ export default function TableProducts() {
 													>
 														Edit
 													</Link>
-													<button className="btn btn-error btn-xs text-white">
+													<Link
+														to={`/table-products/${product.id}`}
+														className="btn btn-error btn-xs text-white"
+													>
 														Delete
-													</button>
+													</Link>
 													<Link
 														to={`/products/${product.id}`}
 														className="btn btn-info btn-xs col-span-2"

@@ -43,7 +43,7 @@ export function fetch(params) {
 	};
 }
 
-export function fetchById(id) {
+export function fetchById(id, setInput) {
 	return async (dispatch) => {
 		try {
 			const { data } = await axios({
@@ -54,6 +54,7 @@ export function fetchById(id) {
 				},
 			});
 			dispatch(productDetails(data));
+			setInput(data.data);
 		} catch (error) {
 			Swal.fire({
 				title: error.response.data.message,

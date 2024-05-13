@@ -4,10 +4,11 @@ import Swal from "sweetalert2";
 import { BASE_URL } from "../../../constants";
 import Loading from "../../components/loading";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchById } from "../../redux/products.slice";
 
 export default function FormPage() {
+	const { id } = useParams();
 	const [loading, setLoading] = useState(false);
 	const [input, setInput] = useState({
 		name: "",
@@ -34,29 +35,6 @@ export default function FormPage() {
 		});
 	};
 
-	// Edit form
-	const { id } = useParams();
-	const dispatch = useDispatch();
-	const { data } = useSelector((state) => state.products.productDetails);
-
-	useEffect(() => {
-		dispatch(fetchById(id));
-		if (id && data) {
-			setInput({
-				name: data.name,
-				description: data.description,
-				image: data.image,
-				weight: data.weight,
-				width: data.width,
-				length: data.length,
-				height: data.height,
-				price: data.price,
-				sku: data.sku,
-				CategoryId: data.CategoryId,
-			});
-		}
-	}, [id]);
-
 	const navigate = useNavigate();
 	const SubmitForm = async (e) => {
 		e.preventDefault();
@@ -67,26 +45,33 @@ export default function FormPage() {
 		formData.append("width", input.width);
 		formData.append("length", input.length);
 		formData.append("height", input.height);
-		formData.append("image", file ? file : data.image);
+		formData.append("image", file ? file : input.image);
 		formData.append("price", input.price);
 		formData.append("sku", input.sku);
 		formData.append("CategoryId", input.CategoryId);
+
+		const option = {
+			method: "POST",
+			url: BASE_URL + "/products",
+			data: formData,
+			headers: {
+				Authorization: "Bearer " + localStorage.getItem("token"),
+			},
+		};
+		if (id) {
+			option.method = "PUT";
+			option.url = BASE_URL + "/products/" + id;
+		}
+
 		try {
 			setLoading(true);
-			const response = await axios({
-				method: "POST",
-				url: BASE_URL + "/products",
-				headers: {
-					Authorization: "Bearer " + localStorage.getItem("token"),
-				},
-				data: formData,
-			});
+			const response = await axios(option);
 			setLoading(false);
 			Swal.fire({
 				icon: "success",
 				title: response.data.message,
 			});
-			navigate("/");
+			navigate("/table-products");
 		} catch (error) {
 			setLoading(false);
 			Swal.fire({
@@ -96,9 +81,18 @@ export default function FormPage() {
 		}
 	};
 
+	// Edit form
+	const dispatch = useDispatch();
+	useEffect(() => {
+		if (id) {
+			dispatch(fetchById(id, setInput, setLoading));
+		}
+	}, [id]);
+
 	if (loading) {
 		return <Loading />;
 	}
+
 	return (
 		<>
 			<div className="w-full h-screen flex justify-center items-center bg-base-200">
