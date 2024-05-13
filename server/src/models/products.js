@@ -73,6 +73,9 @@ module.exports = (sequelize, DataTypes) => {
 					notEmpty: {
 						msg: "Image is required",
 					},
+					isUrl: {
+						msg: "Image is required",
+					},
 				},
 			},
 			weight: {
