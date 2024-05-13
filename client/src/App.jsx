@@ -12,6 +12,7 @@ import LoginPage from "./pages/login.page";
 import RegisterPage from "./pages/register.page";
 import FormPage from "./pages/auth/form.page";
 import Swal from "sweetalert2";
+import TableProducts from "./pages/auth/table.products.page";
 
 const router = createBrowserRouter([
 	{
@@ -19,8 +20,23 @@ const router = createBrowserRouter([
 		children: [
 			{ path: "/", element: <HomePage /> },
 			{
-				path: "/add-product",
+				path: "/form-product",
 				element: <FormPage />,
+				loader: () => {
+					if (localStorage.token) {
+						return null;
+					}
+					Swal.fire({
+						title: "You must login for access this fitur",
+						icon: "error",
+					});
+					return redirect("/login");
+				},
+				children: [{ path: ":id", element: <FormPage /> }],
+			},
+			{
+				path: "/table-products",
+				element: <TableProducts />,
 				loader: () => {
 					if (localStorage.token) {
 						return null;

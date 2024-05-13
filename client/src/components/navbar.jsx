@@ -39,18 +39,28 @@ export default function Navbar() {
 								<Link to={"/"}>Homepage</Link>
 							</li>
 							<li>
-								<Link to={"/add-product"}>
-									Add product
+								<Link to={"/form-product"}>
+									Add Product
 									{!localStorage.token && (
 										<span className="badge badge-neutral text-xs">login</span>
 									)}
 								</Link>
 							</li>
+							{localStorage.token && user.role === "admin" && (
+								<li>
+									<Link to={"/table-products"}>
+										Table Products
+										<span className="badge badge-lg badge-info text-xs">
+											CMS
+										</span>
+									</Link>
+								</li>
+							)}
 							{localStorage.token && (
 								<li>
 									<p className="mt-10">
 										Hello, {user.username}
-										<span className="badge badge-neutral text-xs">
+										<span className="badge badge-lg badge-info text-xs">
 											{user.role}
 										</span>
 									</p>
