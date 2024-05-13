@@ -6,6 +6,7 @@ import Loading from "../../components/loading";
 import { useNavigate } from "react-router-dom";
 
 export default function FormPage() {
+	const [loading, setLoading] = useState(false);
 	const [input, setInput] = useState({
 		name: "",
 		description: "",
@@ -62,6 +63,7 @@ export default function FormPage() {
 			});
 			navigate("/");
 		} catch (error) {
+			setLoading(false);
 			Swal.fire({
 				icon: "error",
 				title: error.response.data.message,
@@ -69,7 +71,6 @@ export default function FormPage() {
 		}
 	};
 
-	const [loading, setLoading] = useState(false);
 	if (loading) {
 		return <Loading />;
 	}
@@ -90,6 +91,7 @@ export default function FormPage() {
 									type="text"
 									name="name"
 									onChange={GetInput}
+									value={input.name}
 									id="name"
 									placeholder="Product Name"
 									className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -107,6 +109,7 @@ export default function FormPage() {
 										type="text"
 										name="CategoryId"
 										onChange={GetInput}
+										value={input.CategoryId}
 										id="CategoryId"
 										className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
 									>
@@ -134,6 +137,7 @@ export default function FormPage() {
 											id="input-group-1"
 											name="price"
 											onChange={GetInput}
+											value={input.price}
 											className="ps-10 w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
 											placeholder="0"
 										/>
@@ -151,6 +155,7 @@ export default function FormPage() {
 									type="file"
 									name="image"
 									onChange={getImage}
+									defaultValue={null}
 									id="image"
 									placeholder="Enter your image"
 									className="file-input w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -168,6 +173,7 @@ export default function FormPage() {
 										type="number"
 										name="weight"
 										onChange={GetInput}
+										value={input.weight}
 										id="weight"
 										placeholder="0"
 										className="file-input w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -184,6 +190,7 @@ export default function FormPage() {
 										type="number"
 										name="width"
 										onChange={GetInput}
+										value={input.width}
 										id="width"
 										placeholder="0"
 										className="file-input w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -200,6 +207,7 @@ export default function FormPage() {
 										type="number"
 										name="length"
 										onChange={GetInput}
+										value={input.length}
 										id="length"
 										placeholder="0"
 										className="file-input w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -216,6 +224,7 @@ export default function FormPage() {
 										type="number"
 										name="height"
 										onChange={GetInput}
+										value={input.height}
 										id="height"
 										placeholder="0"
 										className="file-input w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -233,6 +242,7 @@ export default function FormPage() {
 									rows={4}
 									name="description"
 									onChange={GetInput}
+									value={input.description}
 									id="description"
 									placeholder="Type your description here..."
 									className="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
