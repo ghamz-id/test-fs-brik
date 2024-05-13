@@ -32,6 +32,7 @@ class ProductController {
 				message: `Product ${req.body.name} has been added`,
 			});
 		} catch (error) {
+			console.log(error);
 			next(error);
 		}
 	}

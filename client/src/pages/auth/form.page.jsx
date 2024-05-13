@@ -86,6 +86,18 @@ export default function FormPage() {
 	useEffect(() => {
 		if (id) {
 			dispatch(fetchById(id, setInput, setLoading));
+		} else {
+			setInput({
+				name: "",
+				description: "",
+				weight: 0,
+				width: 0,
+				length: 0,
+				height: 0,
+				price: 0,
+				sku: "",
+				CategoryId: 0,
+			});
 		}
 	}, [id]);
 
